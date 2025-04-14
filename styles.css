@@ -1,0 +1,17 @@
+body{
+    background-color: rgb(240, 241, 197);
+    letter-spacing: .2rem;
+    font-size: .8rem;
+    /* color:rgb(111, 130, 106); */
+}
+.container{
+    max-width: 400px;
+}
+
+.icon{
+    position: relative;
+    top: -50px;
+    border-radius: 50%;
+    width:100px;
+    margin-bottom: -50px;
+}
