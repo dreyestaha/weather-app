@@ -3,15 +3,12 @@ const domCard = document.querySelector(".card");
 const domDetails = document.querySelector(".weatherdetails");
 const domImg = document.querySelector("img.time");
 const domIcon = document.querySelector(".icon img");
+//invocamos la clase Forecast
+const forecast = new Forecast();
 
 //update DOM
 const updateUI = (data) =>{
-    console.log(data);
-    //declaración de variables como Destructuring
     const {weather, cityDetails} =data;
-    //es lo mismo que esto:
-        // const weather = data.weather;
-        // const cityDetails = data.cityDetails;
 
     //update city data
     domDetails.innerHTML=
@@ -39,22 +36,7 @@ const updateUI = (data) =>{
     }
 };
 
-//Update city function
-const updateCity = async (city) =>{
-    //get data from API
-    const cityDetails = await getCity(city);
-    const weather = await getWeather(cityDetails.Key);
 
-    //la función retorna un objeto con los dos datos tomados de la api
-    //el nombre de la propiedad y el valor son el mismo, se puede escribir así:
-    return {cityDetails, weather};
-    
-    /*en lugar de:
-    return {
-        cityDetaisl: cityDetails,
-        weather: weather
-    }*/
-};
 
 cityForm.addEventListener("submit", e =>{
     e.preventDefault();
@@ -64,7 +46,17 @@ cityForm.addEventListener("submit", e =>{
     cityForm.reset();
 
     //update city for UI
-    updateCity(city)
+    forecast.updateCity(city)
         .then(data => updateUI(data))
         .catch(data => console.log(data));
+
+    //set last location to local Storage
+    localStorage.setItem("location", city);
 });
+
+//load previous city on start
+if(localStorage.getItem("location")){
+    forecast.updateCity(localStorage.getItem("location"))
+    .then(data => updateUI(data))
+    .catch(data => console.log(data));
+};
